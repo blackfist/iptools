@@ -28,4 +28,17 @@ defmodule Iptools do
     |> Enum.reduce(0, fn({value, exponent}, acc) -> acc + (value * :math.pow(256, exponent)) end) # 167772161.0
     |> round #167772161
   end
+
+  @doc """
+  Checks if a given ip address is between two other IP addresses (inclusive).
+  If the given ip equals either of the other two IP addresses then it returns
+  true
+  """
+  @spec is_between?(String.t, String.t, String.t) :: boolean()
+  def is_between?(ip, low, high) do
+    ip_int = to_integer(ip)
+    low_int = to_integer(low)
+    high_int = to_integer(high)
+    min(low_int, high_int) <= ip_int && ip_int <= max(low_int, high_int)
+  end
 end

@@ -19,4 +19,11 @@ defmodule IptoolsTest do
     assert Iptools.to_integer("204.14.239.82") == 3423530834
     assert Iptools.to_integer("255.255.255.255") == 4294967295
   end
+
+  test "identifies if an ip address is between two others (inclusive)" do
+    assert Iptools.is_between?("10.0.0.0", "10.0.0.0", "10.255.255.255") == true
+    assert Iptools.is_between?("10.0.0.0", "10.0.0.1", "10.255.255.255") == false
+    assert Iptools.is_between?("10.255.255.255", "10.0.0.1", "10.255.255.255") == true
+    assert Iptools.is_between?("10.255.255.255", "10.0.0.1", "10.255.255.254") == false
+  end
 end
