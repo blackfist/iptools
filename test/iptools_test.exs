@@ -7,7 +7,36 @@ defmodule IptoolsTest do
     assert Iptools.is_rfc1918?("172.16.10.10") == true
     assert Iptools.is_rfc1918?("192.168.1.1") == true
     assert Iptools.is_rfc1918?("172.15.10.10") == false
+    assert Iptools.is_rfc1918?("172.16.0.1") == true
+    assert Iptools.is_rfc1918?("172.32.0.1") == false
     assert Iptools.is_rfc1918?("192.30.252.130") == false
+  end
+
+  test "identifies reserved ip addresses" do
+    assert Iptools.is_reserved?("0.10.10.10") == true
+    assert Iptools.is_reserved?("1.1.1.1") == false
+    assert Iptools.is_reserved?("100.64.10.10") == true
+    assert Iptools.is_reserved?("169.254.10.10") == true
+    assert Iptools.is_reserved?("169.253.10.10") == false
+    assert Iptools.is_reserved?("127.0.0.1") == true
+    assert Iptools.is_reserved?("10.10.10.10") == true
+    assert Iptools.is_reserved?("172.16.10.10") == true
+    assert Iptools.is_reserved?("192.0.0.1") == true
+    assert Iptools.is_reserved?("192.0.2.1") == true
+    assert Iptools.is_reserved?("192.88.99.1") == true
+    assert Iptools.is_reserved?("192.89.99.1") == false
+    assert Iptools.is_reserved?("192.168.1.1") == true
+    assert Iptools.is_reserved?("198.18.99.1") == true
+    assert Iptools.is_reserved?("198.51.100.1") == true
+    assert Iptools.is_reserved?("198.51.101.1") == false
+    assert Iptools.is_reserved?("172.15.10.10") == false
+    assert Iptools.is_reserved?("172.16.0.1") == true
+    assert Iptools.is_reserved?("172.32.0.1") == false
+    assert Iptools.is_reserved?("192.30.252.130") == false
+    assert Iptools.is_reserved?("203.0.113.1") == true
+    assert Iptools.is_reserved?("203.0.114.1") == false
+    assert Iptools.is_reserved?("224.0.0.1") == true
+    assert Iptools.is_reserved?("255.255.255.255") == true
   end
 
   test "converts dotted decimal ips to integers" do
