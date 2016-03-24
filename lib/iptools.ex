@@ -18,6 +18,29 @@ defmodule Iptools do
     {"203.0.113.0", "203.0.113.255"},
     {"224.0.0.0", "255.255.255.255"}
   ]
+
+  @doc """
+  Converts a dotted-decimal notation IPv4 string to a list of integers
+  """
+  @spec to_list(String.t) :: list()
+  def to_list(ip) do
+    # example input: "10.0.0.1"
+    ip
+    |> String.split(".") # ["10", "0", "0", "1"]
+    |> Enum.map(fn(x) -> String.to_integer(x) end) # [10,0,0,1]
+  end
+
+  @doc """
+  Checks if the given string is an IPv4 address in dotted-decimal notication
+  """
+  @spec is_ipv4?(String.t) :: boolean()
+  def is_ipv4?(ip) do
+    case Regex.match?(~r/^(\d{1,3}\.){3}\d{1,3}$/, ip) do
+      false -> false
+      true -> ip |> to_list |> Enum.any?(fn(x) -> x > 255 end) |> Kernel.not
+    end
+  end
+
   @doc """
   You probably want to use is_reserved?
   Determine if an ip address is an RFC1918 address. Reserved for local
@@ -50,11 +73,11 @@ defmodule Iptools do
   an integer
   """
   @spec to_integer(String.t) :: integer()
-  def to_integer(inString) do
+  def to_integer(ip) do
     # Example input "10.0.0.1"
 
-    String.split(inString, ".") # ["10","0","0","1"]
-    |> Enum.map(fn(x) -> String.to_integer(x) end) # [10,0,0,1]
+    ip
+    |> to_list # [10,0,0,1]
     |> Enum.zip([3,2,1,0]) #[{10,3}, {0,2}, {0,1}, {1,0}]
     |> Enum.reduce(0, fn({value, exponent}, acc) -> acc + (value * :math.pow(256, exponent)) end) # 167772161.0
     |> round #167772161

@@ -2,6 +2,19 @@ defmodule IptoolsTest do
   use ExUnit.Case
   doctest Iptools
 
+  test "identifies an IPv4 dotted-decimal ip address" do
+    assert Iptools.is_ipv4?("8.8.8.8") == true
+    assert Iptools.is_ipv4?("-8.8.8.8") == false
+    assert Iptools.is_ipv4?("8.8.8") == false
+    assert Iptools.is_ipv4?("8.8.8.8.8") == false
+    assert Iptools.is_ipv4?("8.8.8.8.") == false
+    assert Iptools.is_ipv4?("1234.8.8.8") == false
+    assert Iptools.is_ipv4?("256.8.8.8") == false
+    assert Iptools.is_ipv4?("8.256.8.8") == false
+    assert Iptools.is_ipv4?("8.8.256.8") == false
+    assert Iptools.is_ipv4?("8.8.8.256") == false
+    assert Iptools.is_ipv4?("kevin.com") == false
+  end
   test "identifies RFC1918 ip addresses" do
     assert Iptools.is_rfc1918?("10.10.10.10") == true
     assert Iptools.is_rfc1918?("172.16.10.10") == true
