@@ -15,7 +15,7 @@ defmodule Iptools.Mixfile do
   def package do
     [
       maintainers: ["Kevin Thompson"],
-      licenses: "MIT",
+      licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/blackfist/iptools"}
     ]
   end
