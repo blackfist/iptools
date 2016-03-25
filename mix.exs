@@ -7,7 +7,17 @@ defmodule Iptools.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: "A set of functions for validating and transforming IPv4 addresses",
+     package: package,
      deps: deps]
+  end
+
+  def package do
+    [
+      maintainers: ["Kevin Thompson"],
+      licenses: "MIT",
+      
+    ]
   end
 
   # Configuration for the OTP application

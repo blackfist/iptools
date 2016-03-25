@@ -1,20 +1,7 @@
 # Iptools
 
-**TODO: Add description**
+A set of functions for working with IPv4 addresses.
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
-
-  1. Add iptools to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:iptools, "~> 0.0.1"}]
-        end
-
-  2. Ensure iptools is started before your application:
-
-        def application do
-          [applications: [:iptools]]
-        end
-
+* is_ipv4?(string) - checks if a string is an ipv4 address
+* is_rfc1918?(string) - checks if a string is an RFC1918 reserved address
+* is_reserved?
