@@ -2,6 +2,10 @@ defmodule IptoolsTest do
   use ExUnit.Case
   doctest Iptools
 
+  test "converts an IPv4 dotted-decimal to a list of integers" do
+    assert Iptools.to_list("10.0.0.1") == [10, 0, 0, 1]
+  end
+
   test "identifies an IPv4 dotted-decimal ip address" do
     assert Iptools.is_ipv4?("8.8.8.8") == true
     assert Iptools.is_ipv4?("-8.8.8.8") == false
