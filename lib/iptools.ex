@@ -22,12 +22,11 @@ defmodule Iptools do
   @doc """
   Converts a dotted-decimal notation IPv4 string to a list of integers
   """
-  @spec to_list(String.t) :: list()
+  @spec to_list(String.t) :: [integer]
   def to_list(ip) do
     # example input: "10.0.0.1"
-    ip
-    |> String.split(".") # ["10", "0", "0", "1"]
-    |> Enum.map(fn(x) -> String.to_integer(x) end) # [10,0,0,1]
+    segments = String.split(ip, ".") # ["10", "0", "0", "1"]
+    for segment <- segments, do: String.to_integer(segment) # [10,0,0,1]
   end
 
   @doc """
