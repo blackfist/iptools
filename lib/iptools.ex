@@ -94,4 +94,30 @@ defmodule Iptools do
     high_int = to_integer(high)
     min(low_int, high_int) <= ip_int && ip_int <= max(low_int, high_int)
   end
+
+  @doc """
+  Changes a subnet mask to a binary representation. E.g. 255.0.0.0
+  becomes 11111111000000000000000000000000
+  """
+  @spec subnet_bit_string(String.t) :: String.t
+  def subnet_bit_string(mask) do
+    # Example input "255.255.0.0"
+    mask
+    |> to_list # [255, 255, 0, 0]
+    |> Enum.map(fn(x) -> Integer.to_string(x, 2) end) # ["11111111", "11111111", "0", "0"]
+    |> Enum.map(fn(x) -> String.ljust(x, 8, ?0) end) # ["11111111", "11111111", "00000000", "00000000"]
+    |> Enum.join # "11111111111111110000000000000000"
+  end
+
+  @doc """
+  Counts the bits in a subnet mask. E.g. 255.0.0.0 becomes 8.
+  """
+  @spec subnet_bit_count(String.t) :: integer()
+  def subnet_bit_count(mask) do
+    # Example input "255.255.0.0"
+    mask
+    |> subnet_bit_string # "11111111111111110000000000000000"
+    |> String.split("") # ["1", "1", "1", "1", "1", "1", etc ...
+    |> Enum.count(fn(x) -> x == "1" end) #16
+  end
 end

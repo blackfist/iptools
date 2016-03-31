@@ -72,4 +72,20 @@ defmodule IptoolsTest do
     assert Iptools.is_between?("10.255.255.255", "10.0.0.1", "10.255.255.255") == true
     assert Iptools.is_between?("10.255.255.255", "10.0.0.1", "10.255.255.254") == false
   end
+
+  test "converts subnet mask to string of ones and zeros" do
+    assert Iptools.subnet_bit_string("255.0.0.0") == "11111111000000000000000000000000"
+    assert Iptools.subnet_bit_string("255.255.0.0") == "11111111111111110000000000000000"
+    assert Iptools.subnet_bit_string("255.255.255.0") == "11111111111111111111111100000000"
+    assert Iptools.subnet_bit_string("255.255.255.255") == "11111111111111111111111111111111"
+  end
+
+  test "properly counts the number of bits in a subnet mask" do
+    assert Iptools.subnet_bit_count("255.0.0.0") == 8
+    assert Iptools.subnet_bit_count("255.255.0.0") == 16
+    assert Iptools.subnet_bit_count("255.255.128.0") == 17
+    assert Iptools.subnet_bit_count("255.255.255.0") == 24
+    assert Iptools.subnet_bit_count("255.255.255.255") == 32
+  end
+
 end
