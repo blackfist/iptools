@@ -10,6 +10,11 @@ complete than just RFC1918.
 * `is_between(string, string, string)` - checks if the first ip address is
 between the next two addresses (inclusive)
 
+There are also some functions for manipulating subnet masks
+
+* `subnet_bit_string(string)` - converts subnet mask to string of ones and zeros
+* `subnet_bit_count(string)` - converts subnet mask to integer count of bits.
+
 # Reserved IP addresses
 You almost certainly want to use `is_reserved?` to find out if an ip address is
 "normal" or not. There are a lot of reserved addresses, such as the `0.0.0.0/8`
