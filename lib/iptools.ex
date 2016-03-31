@@ -103,10 +103,9 @@ defmodule Iptools do
   def subnet_bit_string(mask) do
     # Example input "255.255.0.0"
     mask
-    |> to_list # [255, 255, 0, 0]
-    |> Enum.map(fn(x) -> Integer.to_string(x, 2) end) # ["11111111", "11111111", "0", "0"]
-    |> Enum.map(fn(x) -> String.ljust(x, 8, ?0) end) # ["11111111", "11111111", "00000000", "00000000"]
-    |> Enum.join # "11111111111111110000000000000000"
+    |> to_integer # 4294901760
+    |> Integer.to_string(2) # "11111111111111110000000000000000"
+
   end
 
   @doc """
