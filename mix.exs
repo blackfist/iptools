@@ -2,14 +2,16 @@ defmodule Iptools.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :iptools,
-     version: "0.0.2",
-     elixir: "~> 1.2",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     description: "A set of functions for validating and transforming IPv4 addresses",
-     package: package,
-     deps: deps]
+    [
+      app: :iptools,
+      version: "0.0.3",
+      elixir: "~> 1.2",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      description: "A set of functions for validating and transforming IPv4 addresses",
+      package: package(),
+      deps: deps()
+    ]
   end
 
   def package do
