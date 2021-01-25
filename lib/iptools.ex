@@ -1,4 +1,10 @@
 defmodule Iptools do
+  @external_resource "README.md"
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
+
   @rfc1918_ranges [
     {"10.0.0.0", "10.255.255.255"},
     {"192.168.0.0", "192.168.255.255"},
@@ -20,7 +26,7 @@ defmodule Iptools do
   ]
 
   @doc """
-  Converts a dotted-decimal notation IPv4 string to a list of integers
+  Converts a dotted-decimal notation IPv4 string to a list of integers.
   """
   @spec to_list(String.t) :: [integer]
   def to_list(ip) do
@@ -30,7 +36,7 @@ defmodule Iptools do
   end
 
   @doc """
-  Checks if the given string is an IPv4 address in dotted-decimal notication
+  Checks if the given string is an IPv4 address in dotted-decimal notication.
   """
   @spec is_ipv4?(String.t) :: boolean()
   def is_ipv4?(ip) do
@@ -41,9 +47,11 @@ defmodule Iptools do
   end
 
   @doc """
-  You probably want to use is_reserved?
-  Determine if an ip address is an RFC1918 address. Reserved for local
+  You probably want to use `is_reserved?/1`.
+
+  Determine if an IP address is an RFC1918 address. Reserved for local
   communications within a private network as specified by RFC 1918.
+
   Returns true if it is an RFC1918 address.
   """
   @spec is_rfc1918?(String.t) :: boolean()
@@ -53,10 +61,12 @@ defmodule Iptools do
   end
 
   @doc """
-  Checks to see if an IP address is reserved for special purposes. This includes
-  all of the RFC 1918 addresses as well as other blocks that are reserved by
-  IETF, and IANA for various reasons.
-  https://en.wikipedia.org/wiki/Reserved_IP_addresses
+  Checks to see if an IP address is reserved for special purposes.
+
+  This includes all of the RFC 1918 addresses as well as other blocks that are
+  reserved by IETF, and IANA for various reasons.
+
+  See https://en.wikipedia.org/wiki/Reserved_IP_addresses
   """
   @spec is_reserved?(String.t) :: boolean()
   def is_reserved?(ip) do
@@ -68,8 +78,7 @@ defmodule Iptools do
 
 
   @doc """
-  convert an ip address represented as a dotted-decimal string to
-  an integer
+  Convert an IP address represented as a dotted-decimal string to an integer.
   """
   @spec to_integer(String.t) :: integer()
   def to_integer(ip) do
@@ -83,9 +92,10 @@ defmodule Iptools do
   end
 
   @doc """
-  Checks if a given ip address is between two other IP addresses (inclusive).
+  Checks if a given IP address is between two other IP addresses (inclusive).
+
   If the given ip equals either of the other two IP addresses then it returns
-  true
+  true.
   """
   @spec is_between?(String.t, String.t, String.t) :: boolean()
   def is_between?(ip, low, high) do
@@ -96,8 +106,8 @@ defmodule Iptools do
   end
 
   @doc """
-  Changes a subnet mask to a binary representation. E.g. 255.0.0.0
-  becomes 11111111000000000000000000000000
+  Changes a subnet mask to a binary representation. E.g. `255.0.0.0`
+  becomes `11111111000000000000000000000000`.
   """
   @spec subnet_bit_string(String.t) :: String.t
   def subnet_bit_string(mask) do
@@ -109,7 +119,7 @@ defmodule Iptools do
   end
 
   @doc """
-  Counts the bits in a subnet mask. E.g. 255.0.0.0 becomes 8.
+  Counts the bits in a subnet mask. E.g. `255.0.0.0` becomes `8`.
   """
   @spec subnet_bit_count(String.t) :: integer()
   def subnet_bit_count(mask) do
