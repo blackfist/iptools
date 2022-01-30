@@ -36,7 +36,7 @@ defmodule Iptools do
   end
 
   @doc """
-  Checks if the given string is an IPv4 address in dotted-decimal notication.
+  Checks if the given string is an IPv4 address in dotted-decimal notation.
   """
   @spec is_ipv4?(String.t) :: boolean()
   def is_ipv4?(ip) do
