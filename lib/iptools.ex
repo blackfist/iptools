@@ -25,6 +25,8 @@ defmodule Iptools do
     {"224.0.0.0", "255.255.255.255"}
   ]
 
+  @ipv4_regex ~r/^(0|[1-9][0-9]{0,2}\.){3}(0|[1-9][0-9]{0,2})$/
+
   @doc """
   Converts a dotted-decimal notation IPv4 string to a list of integers.
   """
@@ -40,7 +42,7 @@ defmodule Iptools do
   """
   @spec is_ipv4?(String.t) :: boolean()
   def is_ipv4?(ip) do
-    case Regex.match?(~r/^(\d{1,3}\.){3}\d{1,3}$/, ip) do
+    case Regex.match?(@ipv4_regex, ip) do
       false -> false
       true -> ip |> to_list |> Enum.any?(fn(x) -> x > 255 end) |> Kernel.not
     end

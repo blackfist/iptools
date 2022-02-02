@@ -17,6 +17,7 @@ defmodule IptoolsTest do
     assert Iptools.is_ipv4?("8.256.8.8") == false
     assert Iptools.is_ipv4?("8.8.256.8") == false
     assert Iptools.is_ipv4?("8.8.8.256") == false
+    assert Iptools.is_ipv4?("08.08.08.250") == false
     assert Iptools.is_ipv4?("kevin.com") == false
   end
   test "identifies RFC1918 ip addresses" do
