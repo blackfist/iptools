@@ -3,7 +3,11 @@ defmodule IptoolsTest do
   doctest Iptools
 
   test "converts an IPv4 dotted-decimal to a list of integers" do
-    assert Iptools.to_list("10.0.0.1") == [10, 0, 0, 1]
+    assert Iptools.to_int_list("10.0.0.1") == [10, 0, 0, 1]
+  end
+
+  test "converts an IPv4 dotted-decimal to a list of strings" do
+    assert Iptools.to_str_list("10.0.0.1") == ["10", "0", "0", "1"]
   end
 
   test "identifies an IPv4 dotted-decimal ip address" do
@@ -20,6 +24,17 @@ defmodule IptoolsTest do
     assert Iptools.is_ipv4?("08.08.08.250") == false
     assert Iptools.is_ipv4?("kevin.com") == false
     assert Iptools.is_ipv4?(nil) == false
+    assert Iptools.is_ipv4?("127.0.0.1") == true
+    assert Iptools.is_ipv4?("127.1.1.1") == true
+    assert Iptools.is_ipv4?("192.168.1.1") == true
+    assert Iptools.is_ipv4?("1.0.0.1") == true
+    assert Iptools.is_ipv4?("1.1.1") == false
+    assert Iptools.is_ipv4?("1.1.1.1.1") == false
+    assert Iptools.is_ipv4?("1.2.a.3") == false
+    assert Iptools.is_ipv4?("314.23.3.4") == false
+    assert Iptools.is_ipv4?("1.1.1.299") == false
+    assert Iptools.is_ipv4?("...") == false
+    assert Iptools.is_ipv4?("2..4.5") == false
   end
 
   test "identifies RFC1918 ip addresses" do
@@ -31,6 +46,7 @@ defmodule IptoolsTest do
     assert Iptools.is_rfc1918?("172.32.0.1") == false
     assert Iptools.is_rfc1918?("192.30.252.130") == false
     assert Iptools.is_rfc1918?(nil) == false
+    assert Iptools.is_rfc1918?("127.0.0.1") == false
   end
 
   test "identifies reserved ip addresses" do

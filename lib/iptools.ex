@@ -25,28 +25,46 @@ defmodule Iptools do
     {"224.0.0.0", "255.255.255.255"}
   ]
 
-  @ipv4_regex ~r/^(0|[1-9][0-9]{0,2}\.){3}(0|[1-9][0-9]{0,2})$/
+  @ipv4_regex ~r/^([1-2]?[0-9]{1,2}\.){3}([1-2]?[0-9]{1,2})$/
+
+  @doc """
+  Converts a dotted-decimal notation IPv4 string to a list of strings.
+
+  Example input: `"10.0.0.1"`
+  Example output: `["10", "0", "0", "1"]`
+  """
+  @spec to_str_list(String.t) :: [integer]
+  def to_str_list(ip) do
+    String.split(ip, ".") # ["10", "0", "0", "1"]
+  end
 
   @doc """
   Converts a dotted-decimal notation IPv4 string to a list of integers.
+
+  Example input: `"10.0.0.1"`
+  Example output: `[10, 0, 0, 1]`
   """
-  @spec to_list(String.t()) :: [integer]
-  def to_list(ip) do
-    # example input: "10.0.0.1"
-    segments = String.split(ip, ".") # ["10", "0", "0", "1"]
-    for segment <- segments, do: String.to_integer(segment) # [10,0,0,1]
+  @spec to_int_list(String.t()) :: [String.t()]
+  def to_int_list(ip) do
+    ip
+    |> to_str_list()
+    |> Enum.map(fn s -> String.to_integer(s) end)
   end
 
   @doc """
   Checks if the given string is an IPv4 address in dotted-decimal notation.
   """
-
   @spec is_ipv4?(String.t() | nil) :: boolean()
   def is_ipv4?(nil), do: false
   def is_ipv4?(ip) do
     case Regex.match?(@ipv4_regex, ip) do
-      false -> false
-      true -> ip |> to_list |> Enum.any?(fn x -> x > 255 end) |> Kernel.not()
+      false ->
+        false
+
+      true ->
+        ip
+        |> to_str_list()
+        |> Enum.all?(fn s -> between?(s, 0, 255) && no_leading_zero?(s) end)
     end
   end
 
@@ -58,7 +76,6 @@ defmodule Iptools do
 
   Returns true if it is an RFC1918 address.
   """
-
   @spec is_rfc1918?(String.t() | nil) :: boolean()
   def is_rfc1918?(nil), do: false
   def is_rfc1918?(ip) do
@@ -74,7 +91,6 @@ defmodule Iptools do
 
   See https://en.wikipedia.org/wiki/Reserved_IP_addresses
   """
-
   @spec is_reserved?(String.t() | nil) :: boolean()
   def is_reserved?(nil), do: false
   def is_reserved?(ip) do
@@ -93,9 +109,8 @@ defmodule Iptools do
   @spec to_integer(String.t()) :: integer()
   def to_integer(ip) do
     # Example input "10.0.0.1"
-
     ip
-    |> to_list # [10,0,0,1]
+    |> to_int_list() # [10,0,0,1]
     |> Enum.zip([3, 2, 1, 0]) #[{10,3}, {0,2}, {0,1}, {1,0}]
     |> Enum.reduce(0, fn({value, exponent}, acc) -> acc + (value * :math.pow(256, exponent)) end) # 167772161.0
     |> round #167772161
@@ -139,4 +154,24 @@ defmodule Iptools do
     |> String.split("") # ["1", "1", "1", "1", "1", "1", etc ...
     |> Enum.count(fn x -> x == "1" end) #16
   end
+
+  @spec between?(String.t(), integer(), integer()) :: boolean()
+  defp between?(num, first, last) do
+    n = String.to_integer(num)
+    n >= first && n <= last
+  end
+
+  @spec leading_zero?(String.t()) :: boolean()
+  defp leading_zero?(num), do: not canonical?(num)
+
+  @spec to_canonical(String.t()) :: String.t()
+  defp to_canonical(int) do
+    int |> String.to_integer() |> Integer.to_string()
+  end
+
+  @spec canonical?(String.t()) :: boolean()
+  defp canonical?(int), do: int == to_canonical(int)
+
+  @spec no_leading_zero?(String.t()) :: boolean()
+  defp no_leading_zero?(str), do: not leading_zero?(str)
 end
