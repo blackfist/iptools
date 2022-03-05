@@ -30,7 +30,7 @@ defmodule Iptools do
   @doc """
   Converts a dotted-decimal notation IPv4 string to a list of integers.
   """
-  @spec to_list(String.t) :: [integer]
+  @spec to_list(String.t()) :: [integer]
   def to_list(ip) do
     # example input: "10.0.0.1"
     segments = String.split(ip, ".") # ["10", "0", "0", "1"]
@@ -40,11 +40,11 @@ defmodule Iptools do
   @doc """
   Checks if the given string is an IPv4 address in dotted-decimal notation.
   """
-  @spec is_ipv4?(String.t) :: boolean()
+  @spec is_ipv4?(String.t()) :: boolean()
   def is_ipv4?(ip) do
     case Regex.match?(@ipv4_regex, ip) do
       false -> false
-      true -> ip |> to_list |> Enum.any?(fn(x) -> x > 255 end) |> Kernel.not
+      true -> ip |> to_list |> Enum.any?(fn x -> x > 255 end) |> Kernel.not()
     end
   end
 
@@ -56,10 +56,10 @@ defmodule Iptools do
 
   Returns true if it is an RFC1918 address.
   """
-  @spec is_rfc1918?(String.t) :: boolean()
+  @spec is_rfc1918?(String.t()) :: boolean()
   def is_rfc1918?(ip) do
     @rfc1918_ranges
-    |> Enum.any?(fn({low, high}) -> is_between?(ip, low, high) end)
+    |> Enum.any?(fn {low, high} -> is_between?(ip, low, high) end)
   end
 
   @doc """
@@ -70,25 +70,27 @@ defmodule Iptools do
 
   See https://en.wikipedia.org/wiki/Reserved_IP_addresses
   """
-  @spec is_reserved?(String.t) :: boolean()
+  @spec is_reserved?(String.t()) :: boolean()
   def is_reserved?(ip) do
     case is_rfc1918?(ip) do
-      true -> true
-      false -> @other_reserved_ranges |> Enum.any?(fn({low, high}) -> is_between?(ip, low, high) end)
+      true ->
+        true
+
+      false ->
+        @other_reserved_ranges |> Enum.any?(fn {low, high} -> is_between?(ip, low, high) end)
     end
   end
-
 
   @doc """
   Convert an IP address represented as a dotted-decimal string to an integer.
   """
-  @spec to_integer(String.t) :: integer()
+  @spec to_integer(String.t()) :: integer()
   def to_integer(ip) do
     # Example input "10.0.0.1"
 
     ip
     |> to_list # [10,0,0,1]
-    |> Enum.zip([3,2,1,0]) #[{10,3}, {0,2}, {0,1}, {1,0}]
+    |> Enum.zip([3, 2, 1, 0]) #[{10,3}, {0,2}, {0,1}, {1,0}]
     |> Enum.reduce(0, fn({value, exponent}, acc) -> acc + (value * :math.pow(256, exponent)) end) # 167772161.0
     |> round #167772161
   end
@@ -99,7 +101,7 @@ defmodule Iptools do
   If the given ip equals either of the other two IP addresses then it returns
   true.
   """
-  @spec is_between?(String.t, String.t, String.t) :: boolean()
+  @spec is_between?(String.t(), String.t(), String.t()) :: boolean()
   def is_between?(ip, low, high) do
     ip_int = to_integer(ip)
     low_int = to_integer(low)
@@ -111,7 +113,7 @@ defmodule Iptools do
   Changes a subnet mask to a binary representation. E.g. `255.0.0.0`
   becomes `11111111000000000000000000000000`.
   """
-  @spec subnet_bit_string(String.t) :: String.t
+  @spec subnet_bit_string(String.t()) :: String.t()
   def subnet_bit_string(mask) do
     # Example input "255.255.0.0"
     mask
@@ -123,12 +125,12 @@ defmodule Iptools do
   @doc """
   Counts the bits in a subnet mask. E.g. `255.0.0.0` becomes `8`.
   """
-  @spec subnet_bit_count(String.t) :: integer()
+  @spec subnet_bit_count(String.t()) :: integer()
   def subnet_bit_count(mask) do
     # Example input "255.255.0.0"
     mask
     |> subnet_bit_string # "11111111111111110000000000000000"
     |> String.split("") # ["1", "1", "1", "1", "1", "1", etc ...
-    |> Enum.count(fn(x) -> x == "1" end) #16
+    |> Enum.count(fn x -> x == "1" end) #16
   end
 end

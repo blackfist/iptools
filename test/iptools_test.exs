@@ -20,6 +20,7 @@ defmodule IptoolsTest do
     assert Iptools.is_ipv4?("08.08.08.250") == false
     assert Iptools.is_ipv4?("kevin.com") == false
   end
+
   test "identifies RFC1918 ip addresses" do
     assert Iptools.is_rfc1918?("10.10.10.10") == true
     assert Iptools.is_rfc1918?("172.16.10.10") == true
@@ -59,12 +60,12 @@ defmodule IptoolsTest do
 
   test "converts dotted decimal ips to integers" do
     assert Iptools.to_integer("0.0.0.0") == 0
-    assert Iptools.to_integer("0.10.0.0") == 655360
+    assert Iptools.to_integer("0.10.0.0") == 655_360
     assert Iptools.to_integer("0.0.10.0") == 2560
     assert Iptools.to_integer("0.0.0.10") == 10
-    assert Iptools.to_integer("10.0.0.0") == 167772160
-    assert Iptools.to_integer("204.14.239.82") == 3423530834
-    assert Iptools.to_integer("255.255.255.255") == 4294967295
+    assert Iptools.to_integer("10.0.0.0") == 167_772_160
+    assert Iptools.to_integer("204.14.239.82") == 3_423_530_834
+    assert Iptools.to_integer("255.255.255.255") == 4_294_967_295
   end
 
   test "identifies if an ip address is between two others (inclusive)" do
@@ -88,5 +89,4 @@ defmodule IptoolsTest do
     assert Iptools.subnet_bit_count("255.255.255.0") == 24
     assert Iptools.subnet_bit_count("255.255.255.255") == 32
   end
-
 end
