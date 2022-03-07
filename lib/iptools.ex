@@ -40,7 +40,9 @@ defmodule Iptools do
   @doc """
   Checks if the given string is an IPv4 address in dotted-decimal notation.
   """
-  @spec is_ipv4?(String.t()) :: boolean()
+
+  @spec is_ipv4?(String.t() | nil) :: boolean()
+  def is_ipv4?(nil), do: false
   def is_ipv4?(ip) do
     case Regex.match?(@ipv4_regex, ip) do
       false -> false
@@ -56,7 +58,9 @@ defmodule Iptools do
 
   Returns true if it is an RFC1918 address.
   """
-  @spec is_rfc1918?(String.t()) :: boolean()
+
+  @spec is_rfc1918?(String.t() | nil) :: boolean()
+  def is_rfc1918?(nil), do: false
   def is_rfc1918?(ip) do
     @rfc1918_ranges
     |> Enum.any?(fn {low, high} -> is_between?(ip, low, high) end)
@@ -70,7 +74,9 @@ defmodule Iptools do
 
   See https://en.wikipedia.org/wiki/Reserved_IP_addresses
   """
-  @spec is_reserved?(String.t()) :: boolean()
+
+  @spec is_reserved?(String.t() | nil) :: boolean()
+  def is_reserved?(nil), do: false
   def is_reserved?(ip) do
     case is_rfc1918?(ip) do
       true ->
