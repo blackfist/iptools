@@ -51,6 +51,10 @@ defmodule Iptools do
     |> Enum.map(fn s -> String.to_integer(s) end)
   end
 
+  @doc deprecated: "Replaced by `to_int_list/1`"
+  @spec to_list(String.t()) :: [integer()]
+  def to_list(ip), do: to_int_list(ip)
+
   @doc """
   Checks if the given string is an IPv4 address in dotted-decimal notation.
   """

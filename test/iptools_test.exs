@@ -10,6 +10,11 @@ defmodule IptoolsTest do
     assert Iptools.to_str_list("10.0.0.1") == ["10", "0", "0", "1"]
   end
 
+  test "#to_list/1 returns same output as #to_int_list/1" do
+    assert Iptools.to_list("10.0.0.1") == [10, 0, 0, 1]
+    assert Iptools.to_list("10.0.0.1") == Iptools.to_int_list("10.0.0.1")
+  end
+
   test "identifies an IPv4 dotted-decimal ip address" do
     assert Iptools.is_ipv4?("8.8.8.8") == true
     assert Iptools.is_ipv4?("-8.8.8.8") == false
