@@ -33,7 +33,7 @@ defmodule Iptools do
   Example input: `"10.0.0.1"`
   Example output: `["10", "0", "0", "1"]`
   """
-  @spec to_str_list(String.t) :: [integer]
+  @spec to_str_list(String.t()) :: [String.t()]
   def to_str_list(ip) do
     String.split(ip, ".") # ["10", "0", "0", "1"]
   end
@@ -44,7 +44,7 @@ defmodule Iptools do
   Example input: `"10.0.0.1"`
   Example output: `[10, 0, 0, 1]`
   """
-  @spec to_int_list(String.t()) :: [String.t()]
+  @spec to_int_list(String.t()) :: [integer()]
   def to_int_list(ip) do
     ip
     |> to_str_list()
