@@ -113,4 +113,9 @@ defmodule IptoolsTest do
     assert Iptools.subnet_bit_count("255.255.255.0") == 24
     assert Iptools.subnet_bit_count("255.255.255.255") == 32
   end
+
+  test "converts ip address to tuple" do
+    assert Iptools.parse_ipv4_address("127.0.0.1") == {127,0,0,1}
+    assert Iptools.parse_ipv4_address("invalid") == {:error, :einval}
+  end
 end

@@ -17,6 +17,7 @@ A set of functions for working with IPv4 addresses.
 - `to_integer/1` - convert IP address string to integer.
 - `is_between?/3` - checks if the first IP address is between the next two
   addresses (inclusive).
+- `parse_ipv4_address/1` - converts IP address to tuple for use with Erlang functions, e.g. :gen_tcp
 
 There are also some functions for manipulating subnet masks.
 

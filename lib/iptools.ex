@@ -159,6 +159,27 @@ defmodule Iptools do
     |> Enum.count(fn x -> x == "1" end) #16
   end
 
+  @doc """
+  Returns an IP address as a tuple of integers. Useful for passing to Erlang
+  functions like :gen_tcp
+
+  ## Examples
+
+      iex> Iptools.parse_ipv4_address("127.0.0.1")
+      {127.0.0.1}
+
+      iex> Iptools.parse_ipv4_address("invalid")
+      {:error, :einval}
+
+  """
+  @spec parse_ipv4_address(String.t()) :: ({integer(), integer(), integer(), integer()} | {:error, :einval})
+  def parse_ipv4_address(ip) do
+    case :inet.parse_ipv4_address(:erlang.binary_to_list(ip)) do
+      {:ok, result} -> result
+      some_error -> some_error
+    end
+  end
+
   @spec between?(String.t(), integer(), integer()) :: boolean()
   defp between?(num, first, last) do
     n = String.to_integer(num)
